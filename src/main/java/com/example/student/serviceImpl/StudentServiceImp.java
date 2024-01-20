@@ -1,23 +1,26 @@
-package com.example.serviceImpl;
+package com.example.student.serviceImpl;
 
-import com.example.student.dao.Student_DAO;
+import com.example.student.dao.StudentDAO;
 import com.example.student.dto.StudentDTO;
 import com.example.student.model.Student;
-import com.example.student.service.Student_Service;
+import com.example.student.service.StudentService;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import java.util.Optional;
 
 
 @Service
+@Slf4j
 //@Transactional
-public class Student_Service_Imp implements Student_Service {
+public class StudentServiceImp implements StudentService {
 
 
     @Autowired
-    private Student_DAO studentdao;
+    private StudentDAO studentdao;
 
     @Override
     public Student saveStudent(StudentDTO studentDTO) {
@@ -29,23 +32,38 @@ public class Student_Service_Imp implements Student_Service {
     }
 
     @Override
-    public List<Student> getStudents() {
-        return null;
+    public Student updateStudent(StudentDTO studentDTO, int id) {
+        Optional<Student> optionalStudent = studentdao.findById(id);
+        if (optionalStudent.isPresent()) {
+            Student student = optionalStudent.get();
+            student.setStudent_name(studentDTO.getName());
+            student.setStudent_email(studentDTO.getEmail());
+            student.setStudent_branch(studentDTO.getBranch());
+            return studentdao.save(student);
+        } else {
+            throw new EntityNotFoundException("Student with id " + id + " not found");
+        }
     }
 
     @Override
-    public boolean deleteStudent(Student student) {
-        return false;
+    public List<Student> getAllStudents() {
+        return studentdao.findAll();
     }
 
     @Override
-    public List<Student> getStudentByID(Student student) {
-        return null;
+    public String deleteStudent(int id) {
+        studentdao.deleteById(id);
+        return "deleted";
     }
 
     @Override
-    public boolean updateStudent(Student student) {
-        return false;
+    public Student getStudentByID(int id) {
+        Optional<Student> optionalStudent = studentdao.findById(id);
+        if (optionalStudent.isPresent()) {
+            return optionalStudent.get();
+        } else {
+            throw new EntityNotFoundException("Student with id " + id + " not found");
+        }
     }
 
 

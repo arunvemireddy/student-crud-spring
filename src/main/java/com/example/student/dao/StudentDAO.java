@@ -8,10 +8,5 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface Student_DAO extends JpaRepository<Student,Integer> {
-	
-
-    @Query(value = "SELECT * FROM STUDENT",nativeQuery = true)
-    public List<Student> getStudents(int id);
-
+public interface StudentDAO extends JpaRepository<Student,Integer> {
 }

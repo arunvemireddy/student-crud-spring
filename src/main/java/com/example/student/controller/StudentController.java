@@ -2,55 +2,51 @@ package com.example.student.controller;
 
 
 import com.example.student.constants.StudentConstant;
+import com.example.student.dto.StudentDTO;
+import com.example.student.service.StudentService;
+import jakarta.websocket.server.PathParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController  
 @CrossOrigin(origins="*")
 @RequestMapping(path="/api")
-public class Controller {
+public class StudentController {
 
-//    @Autowired
-//    private Student_Service studentservice;
+    @Autowired
+    private StudentService studentService;
 
 
     @GetMapping(path = "/studentApp")
     public ResponseEntity<?> studentApp(){
         return new ResponseEntity<>(StudentConstant.studentApp, HttpStatus.OK);
     }
+    @PostMapping(path = "/saveStudent")
+    public ResponseEntity<?> saveStudent(@RequestBody StudentDTO studentDTO){
+        return new ResponseEntity<>(studentService.saveStudent(studentDTO),HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/updateStudent")
+    public ResponseEntity<?> updateStudent(@RequestBody StudentDTO studentDTO, @PathParam("id") int id){
+        return new ResponseEntity<>(studentService.updateStudent(studentDTO,id),HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/deleteStudent")
+    public ResponseEntity<?> deleteStudent(@PathParam("id") int id){
+        return new ResponseEntity<>(studentService.deleteStudent(id),HttpStatus.OK);
+    }
       
-//    @PostMapping("save-student")
-//    public boolean saveStudent(@RequestBody Student student) {
-//         return studentservice.saveStudent(student);
-//
-//    }
-//
-//    @GetMapping("students-list")
-//    public List<Student> allstudents() {
-//         return studentservice.getStudents();
-//
-//    }
-//
-//    @DeleteMapping("delete-student/{student_id}")
-//    public boolean deleteStudent(@PathVariable("student_id") int student_id,Student student) {
-//        student.setStudent_id(student_id);
-//        return studentservice.deleteStudent(student);
-//    }
-//
-//    @GetMapping("student/{student_id}")
-//    public List<Student> allstudentByID(@PathVariable("student_id") int student_id,Student student) {
-//         student.setStudent_id(student_id);
-//         return studentservice.getStudentByID(student);
-//
-//    }
-//
-//    @PostMapping("update-student/{student_id}")
-//    public boolean updateStudent(@RequestBody Student student,@PathVariable("student_id") int student_id) {
-//        student.setStudent_id(student_id);
-//        return studentservice.updateStudent(student);
-//    }
+
+    @GetMapping(path = "/getAllStudents")
+    public ResponseEntity<?> getAllStudents() {
+         return new ResponseEntity<>(studentService.getAllStudents(),HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getStudentByID")
+    public ResponseEntity<?> getStudentByID(@PathParam("id") int id) {
+        return new ResponseEntity<>(studentService.getStudentByID(id),HttpStatus.OK);
+    }
+
 }

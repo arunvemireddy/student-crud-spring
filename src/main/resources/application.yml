@@ -1,11 +1,35 @@
-# Database  
-db.driver= com.mysql.jdbc.Driver
-db.url= jdbc:mysql://localhost:3306/db
-db.username=root
-db.password=root
-  
-# Hibernate  
-hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
-hibernate.show_sql=true
-hibernate.hbm2ddl.auto=update
-entitymanager.packagesToScan=Model
+server:
+  port: 7070
+
+spring:
+  application:
+    name: "Student Application"
+  datasource:
+    url: jdbc:mysql://localhost:3306/studentdb?allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: 15D41A05P3@run
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "*"
+    health:
+      show-details: always
+
+info:
+  application:
+    name: "Student Application"
+    database: "MySQL"
