@@ -1,13 +1,17 @@
 server:
-  port: 7070
+  port: 7071
 
 spring:
   application:
     name: "Student Application"
-  datasource:
+  datasource-primary:
     url: jdbc:mysql://localhost:3306/studentdb?allowPublicKeyRetrieval=true&useSSL=false
     username: root
-    password: 15D41A05P3@run
+    password: #password
+  datasource-secondary:
+    url: jdbc:mysql://localhost:3306/studentdb?allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: #password
   jpa:
     show-sql: true
     hibernate:
