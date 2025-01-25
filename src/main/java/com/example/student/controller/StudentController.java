@@ -5,18 +5,26 @@ import com.example.student.constants.StudentConstant;
 import com.example.student.dto.StudentDTO;
 import com.example.student.service.StudentService;
 import jakarta.websocket.server.PathParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController  
 @CrossOrigin(origins="*")
-@RequestMapping(path="/api")
+@RequestMapping(path="api")
 public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    @GetMapping(path = "test")
+    public String test(){
+        log.info("invoked test method");
+        return "Hello";
+    }
 
 
     @GetMapping(path = "/studentApp")

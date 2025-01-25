@@ -1,25 +1,8 @@
-server:
-  port: 7071
-
 spring:
+  profiles:
+    include: mysql,config,security
   application:
     name: "Student Application"
-  datasource-primary:
-    url: jdbc:mysql://localhost:3306/studentdb?allowPublicKeyRetrieval=true&useSSL=false
-    username: root
-    password: #password
-  datasource-secondary:
-    url: jdbc:mysql://localhost:3306/studentdb?allowPublicKeyRetrieval=true&useSSL=false
-    username: root
-    password: #password
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-  properties:
-    hibernate:
-      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-
 
 management:
   info:
@@ -37,3 +20,6 @@ info:
   application:
     name: "Student Application"
     database: "MySQL"
+
+server:
+  port: 7071
