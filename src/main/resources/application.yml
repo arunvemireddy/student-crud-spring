@@ -1,6 +1,9 @@
 spring:
   profiles:
-    include: mysql,config,security
+    include:
+      - config
+      - mysql
+      - security
   application:
     name: "Student Application"
 
