@@ -24,6 +24,7 @@ public class StudentController {
     public String test(){
         log.info("invoked test method");
         return "Hello";
+        
     }
 
 
