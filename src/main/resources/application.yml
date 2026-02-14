@@ -4,6 +4,7 @@ spring:
       - config
       - mysql
       - security
+      - kafka
   application:
     name: "Student Application"
 

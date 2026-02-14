@@ -3,7 +3,11 @@ package com.example.student.controller;
 
 import com.example.student.constants.StudentConstant;
 import com.example.student.dto.StudentDTO;
+import com.example.student.model.Student;
 import com.example.student.service.StudentService;
+import com.example.student.serviceImpl.StudentKafkaProducer;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,9 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    private StudentKafkaProducer studentKafkaProducer;
+
     @GetMapping(path = "test")
     public String test(){
         log.info("invoked test method");
@@ -32,8 +39,10 @@ public class StudentController {
         return new ResponseEntity<>(StudentConstant.studentApp, HttpStatus.OK);
     }
     @PostMapping(path = "/saveStudent")
-    public ResponseEntity<?> saveStudent(@RequestBody StudentDTO studentDTO){
-        return new ResponseEntity<>(studentService.saveStudent(studentDTO),HttpStatus.OK);
+    public ResponseEntity<?> saveStudent(@Valid @RequestBody StudentDTO studentDTO){
+        Student student = studentService.saveStudent(studentDTO);
+        studentKafkaProducer.sendStudent(student);
+        return new ResponseEntity<>(student,HttpStatus.OK);
     }
 
     @PostMapping(path = "/updateStudent")
@@ -53,7 +62,7 @@ public class StudentController {
     }
 
     @GetMapping(path = "/getStudentByID")
-    public ResponseEntity<?> getStudentByID(@PathParam("id") int id) {
+    public ResponseEntity<?> getStudentByID(@PathParam("id") int id) throws EntityNotFoundException {
         return new ResponseEntity<>(studentService.getStudentByID(id),HttpStatus.OK);
     }
 
